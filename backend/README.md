@@ -82,5 +82,5 @@ The `--reload` flag will detect file changes and restart the server automaticall
 ## ELB url 
 
 ```
-http://efhtkgyd3h4s.elb.amazonaws.com
+https://a7388af460df34f45a852704d2c53ab9-567493719.us-east-1.elb.amazonaws.com/
 ```

@@ -1,8 +1,9 @@
 # Use the official Python image from the Docker Hub
-FROM python:3.8-slim
+FROM python:3.8.0-slim
 
 # Set the working directory in the container
 WORKDIR /app
+COPY . /app
 
 # Copy the requirements file into the container
 COPY requirements.txt .
@@ -10,11 +11,7 @@ COPY requirements.txt .
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
-COPY . .
-
 # Expose the port the app runs on
 EXPOSE 8080
 
-# Define the entrypoint to run the application with Gunicorn
-ENTRYPOINT ["gunicorn", "-b", ":8080", "main:APP"]
+CMD ["python", "./src/app.py"]

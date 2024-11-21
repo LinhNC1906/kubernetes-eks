@@ -1,9 +1,5 @@
 version: 0.2
 
-env:
-  parameter-store:
-    JWT_SECRET: "JWT_SECRET"
-
 phases:
   install:
     runtime-versions:
@@ -20,7 +16,7 @@ phases:
   pre_build:
     commands:
       - echo Configuring AWS CLI...
-      - aws eks update-kubeconfig --region us-west-2 --name linhnc4-eks-cluster
+      - aws eks --region us-east-1 update-kubeconfig --name myEKSCluster30
       - echo Installing Python dependencies...
       - pip3 install -r requirements.txt
       - echo Running tests...
@@ -30,20 +26,21 @@ phases:
       - echo "Building the application..."
       - echo "JWT_SECRET is $JWT_SECRET"
       - echo Building Docker image...
-      - docker build -t my-docker-repo/my-app:latest .
+      - docker build -t mytest .
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin linhnc4.dkr.ecr.us-west-2.amazonaws.com
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 897729119217.dkr.ecr.us-east-1.amazonaws.com
       - echo Tagging Docker image...
-      - docker tag my-docker-repo/my-app:latest linhnc4.dkr.ecr.us-west-2.amazonaws.com/my-app:latest
+      - docker tag mytest:latest 897729119217.dkr.ecr.us-east-1.amazonaws.com/mytest:latest
       - echo Pushing Docker image to ECR...
-      - docker push linhnc4.dkr.ecr.us-west-2.amazonaws.com/my-app:latest
+      - docker push 897729119217.dkr.ecr.us-east-1.amazonaws.com/mytest:latest
 
   post_build:
     commands:
       - echo Deploying to EKS...
-      - kubectl apply -f k8s/deployment.yaml
-      - kubectl apply -f k8s/service.yaml
-
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
 artifacts:
-  files:
-    - '**/*'
+  files: build.json
+env:
+  parameter-store:
+    JWT_SECRET: JWT_SECRET

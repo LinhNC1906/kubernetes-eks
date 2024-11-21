@@ -6,7 +6,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: '2024-11-06'
+        Version: '2024-11-21'
         Statement:
           - Effect: Allow
             Principal:
@@ -15,7 +15,7 @@ Resources:
       Policies:
         - PolicyName: CodePipelinePolicy
           PolicyDocument:
-            Version: '2024-11-06'
+            Version: '2024-11-21'
             Statement:
               - Effect: Allow
                 Action:
@@ -37,9 +37,9 @@ Resources:
         Type: LINUX_CONTAINER
         EnvironmentVariables:
           - Name: CLUSTER_NAME
-            Value: linhnc4-eks-cluster
+            Value: myEKSCluster30
           - Name: REGION
-            Value: us-west-2
+            Value: us-east-1
       Source:
         Type: CODEPIPELINE
       Artifacts:
