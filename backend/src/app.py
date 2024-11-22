@@ -12,8 +12,11 @@ from auth.auth import AuthError, requires_auth
 load_dotenv()
 
 app = Flask(__name__)
+app.app_context().push()
 setup_db(app)
+app.app_context().push()
 CORS(app)
+app.app_context().push()
 
 '''
 uncomment the following line to initialize the datbase
@@ -30,7 +33,7 @@ jwt_secret = os.getenv('JWT_SECRET')
 @app.route('/')
 def home():
     return f"JWT Secret is: {jwt_secret}"
-	
+
 '''
 implement endpoint
     GET /paints
@@ -39,7 +42,7 @@ implement endpoint
     returns status code 200 and json {"success": True, "paints": paints} where paints is the list of paints
         or appropriate status code indicating reason for failure
 '''
-@app.route('/paints', methods=['GET'])
+@app.route('/api/paints', methods=['GET'])
 @requires_auth('get:paints')
 def get_paints():
     try:
@@ -63,7 +66,7 @@ implement endpoint
     returns status code 200 and json {"success": True, "paints": paints} where paints is the list of paints
         or appropriate status code indicating reason for failure
 '''
-@app.route('/paints-detail', methods=['GET'])
+@app.route('/api/paints-detail', methods=['GET'])
 @requires_auth('get:paints-detail')
 def get_paints_detail(payload):
     try:
@@ -88,7 +91,7 @@ implement endpoint
     returns status code 200 and json {"success": True, "paints": paint} where paint an array containing only the newly created paint
         or appropriate status code indicating reason for failure
 '''
-@app.route('/paints', methods=['POST'])
+@app.route('/api/paints', methods=['POST'])
 @requires_auth('post:paints')
 def create_paint(payload):
     try:
@@ -116,7 +119,7 @@ implement endpoint
     returns status code 200 and json {"success": True, "paints": paint} where paint an array containing only the updated paint
         or appropriate status code indicating reason for failure
 '''
-@app.route('/paints/<int:id>', methods=['PATCH'])
+@app.route('/api/paints/<int:id>', methods=['PATCH'])
 @requires_auth('patch:paints')
 def update_paint(payload, id):
     try:
@@ -150,7 +153,7 @@ implement endpoint
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
-@app.route('/paints/<int:id>', methods=['DELETE'])
+@app.route('/api/paints/<int:id>', methods=['DELETE'])
 @requires_auth('delete:paints')
 def delete_paint(payload, id):
     try:
